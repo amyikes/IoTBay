@@ -31,18 +31,35 @@ CREATE TABLE Admin (
     CONSTRAINT Admin_PK PRIMARY KEY (UserID),
     CONSTRAINT Admin_FK1 FOREIGN KEY (UserID) REFERENCES Users
 );
-
 CREATE TABLE Orders
-( 	Order_ID INT		NOT NULL,
+( 	Order_ID BIGINT		NOT NULL,
 	Order_date DATE,
 	Customer_ID BIGINT		NOT NULL, 
 CONSTRAINT Order_PK PRIMARY KEY (Order_ID),
 CONSTRAINT ORDER_FK1 FOREIGN KEY (Customer_ID) REFERENCES Users);
 
 CREATE TABLE Order_items 
-(	Order_ID INT 		NOT NULL,
+(	Order_ID BIGINT 		NOT NULL,
 	Product_ID INT 		NOT NULL,
 	Quantity INT		NOT NULL,
 CONSTRAINT Order_items_PK PRIMARY KEY (Order_ID,Product_ID),
 CONSTRAINT Order_items_FK1 FOREIGN KEY (Order_ID) REFERENCES Orders,
 CONSTRAINT Order_items_FK2 FOREIGN KEY (Product_ID) REFERENCES Product);
+
+CREATE TABLE Payments
+( 	PaymentID BIGINT		NOT NULL,
+	Order_ID BIGINT		NOT NULL,  
+        Credit_Card_Number INT      NOT NULL,
+        Expiry_Date INT          NOT NULL,
+        CSV    INT              NOT NULL, 
+CONSTRAINT Payments_PK PRIMARY KEY (PaymentID),
+CONSTRAINT Payments_FK1 FOREIGN KEY (Order_ID) REFERENCES Orders
+);
+
+CREATE TABLE AccessLogs 
+(	UserID BIGINT 		NOT NULL,
+	LoginTime BIGINT	NOT NULL,
+        LogoutTime  BIGINT      NOT NULL,
+CONSTRAINT Access_logs_PK PRIMARY KEY (UserID),
+CONSTRAINT Access_logs_FK1 FOREIGN KEY (UserID) REFERENCES Users
+);
