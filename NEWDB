@@ -40,7 +40,7 @@ CONSTRAINT ORDER_FK1 FOREIGN KEY (Customer_ID) REFERENCES Users);
 
 CREATE TABLE Order_items 
 (	Order_ID BIGINT 		NOT NULL,
-	Product_ID INT 		NOT NULL,
+	Product_ID BIGINT 		NOT NULL,
 	Quantity INT		NOT NULL,
 CONSTRAINT Order_items_PK PRIMARY KEY (Order_ID,Product_ID),
 CONSTRAINT Order_items_FK1 FOREIGN KEY (Order_ID) REFERENCES Orders,
@@ -62,4 +62,13 @@ CREATE TABLE AccessLogs
         LogoutTime  BIGINT      NOT NULL,
 CONSTRAINT Access_logs_PK PRIMARY KEY (UserID),
 CONSTRAINT Access_logs_FK1 FOREIGN KEY (UserID) REFERENCES Users
+);
+
+CREATE TABLE Product (
+    ProductID BIGINT,
+    ProductDescription VARCHAR(200),
+    StockLevel INT,
+    DateAdded DATE,
+    Price Varchar(30),
+    CONSTRAINT Products_PK PRIMARY KEY (ProductID)
 );
