@@ -1,0 +1,18 @@
+add getorder method to DB manager
+
+public List<Order> getOrders(long userID) {
+        List<Order> orders = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Products WHERE UserID = ?");
+            statement.setLong(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            
+                    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+    
+    
+    
