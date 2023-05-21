@@ -69,6 +69,23 @@
             </div>
             <input type="submit" value="Complete Order">
         </form>
+
+        <% if (request.getMethod().equals("POST")) {
+            // Retrieve payment details from the form
+            String cardNumber = request.getParameter("cardNumber");
+            String expiryDate = request.getParameter("expiryDate");
+            String csv = request.getParameter("csv");
+
+            //Order newOrder = new Order(orderId, customerId);
+            
+            //orderController.addOrder(newOrder);
+
+            // Display the thank you message
+            %>
+            <h2>Thank You for Your Order!</h2>
+            <p>Your order has been placed successfully.</p>
+        <% } %>
+        
     </main>
     <footer>
         <p>&copy; 2023 IoT Bay</p>
