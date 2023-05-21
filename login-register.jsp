@@ -8,7 +8,7 @@
         .forms-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15%;
         }
 
         form {
