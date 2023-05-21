@@ -1,98 +1,71 @@
-<%-- 
-    Document   : products
-    Created on : 3 Apr 2023, 9:04:11 pm
-    Author     : amy
---%>
-
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.HashMap"%>
-
-<%
-    // Initialize the orders session variable if it doesn't exist
-    if (session.getAttribute("orders") == null) {
-        session.setAttribute("orders", new HashMap<String, Integer>());
-    }
-
-    // Define a HashMap of products and their prices
-    Map<String, Integer> products = new HashMap<String, Integer>();
-    products.put("Product 1", 10);
-    products.put("Product 2", 20);
-    products.put("Product 3", 30);
-
-    // Get the orders session variable
-    Map<String, Integer> orders = (Map<String, Integer>) session.getAttribute("orders");
-%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Products</title>
-        <link rel="stylesheet" href="style2.css"/>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details</title>
+</head>
+<body>
     <nav>
         <ul>
-            <li><h2>IoT Bay</h2></li>
-            <li><a href="index.html">home</a></li>
-            <li><a href="products.jsp">products</a></li>
-            <li><a href="register.jsp">login/register</a></li>
-            <li><a href="account.jsp">account</a></li>
-        </ul>   
+            <li><a href="home">Home</a></li>
+            <li><a href="products">Products</a></li>
+            <li><a href="cart">Cart</a></li>
+            <li><a href="logout">Logout</a></li>
+        </ul>
     </nav>
-    <body>
-        <h1>Products</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (String product : products.keySet()) { %>
-                    <tr>
-                        <td><%= product %></td>
-                        <td><%= products.get(product) %></td>
-                        <td>
-                            <form method="post" action="products.jsp">
-                                <input type="hidden" name="product" value="<%= product %>">
-                                <input type="submit" value="Buy">
-                            </form>
-                        </td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-        <br>
-        <h2>Orders</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (String product : orders.keySet()) { %>
-                    <tr>
-                        <td><%= product %></td>
-                        <td><%= orders.get(product) %></td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </body>
-</html>
 
-<%
-    // Check if the Buy button was clicked and update the orders session variable accordingly
-    String product = request.getParameter("product");
-    if (product != null) {
-        int quantity = 1;
-        if (orders.containsKey(product)) {
-            quantity = orders.get(product) + 1;
-        }
-        orders.put(product, quantity);
-    }
-%>
+    <h1>Product Details</h1>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Stock Level</th>
+            <th>Price</th>
+            <% 
+                boolean isAdmin = false; // Replace with your logic to determine if the user is an admin
+                boolean isStaff = false; // Replace with your logic to determine if the user is staff
+                if (isAdmin || isStaff) { %>
+                <th>Edit</th>
+            <% } else { %>
+                <th>Add to Cart</th>
+            <% } %>
+        </tr>
+        <% for (Product product : products) { %>
+            <tr>
+                <td><%= product.getProductId() %></td>
+                <td><%= product.getDescription() %></td>
+                <td><%= product.getStockLevel() %></td>
+                <td><%= product.getPrice() %></td>
+                <% if (isAdmin || isStaff) { %>
+                    <td>
+                        <% if (isAdmin) { %>
+                            <a href="updateProduct?productId=<%= product.getProductId() %>">Edit</a>
+                        <% } else { %>
+                            <button onclick="openEditDialog(<%= product.getProductId() %>)">Edit</button>
+                        <% } %>
+                    </td>
+                <% } else { %>
+                    <td>
+                        <form method="POST" action="addToCart">
+                            <input type="hidden" name="productId" value="<%= product.getProductId() %>">
+                            <button type="submit">Add to Cart</button>
+                        </form>
+                    </td>
+                <% } %>
+            </tr>
+        <% } %>
+    </table>
+
+    <% if (isAdmin || isStaff) { %>
+        <script>
+            function openEdit(productId) {
+                // Implement logic to open the edit product dialog
+                
+                
+            }
+        </script>
+    <% } %>
+</body>
+</html>

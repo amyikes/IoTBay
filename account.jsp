@@ -1,51 +1,69 @@
-<%-- 
-    Document   : account
-    Created on : 3 Apr 2023, 8:52:45 pm
-    Author     : amy
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <link rel="stylesheet" href="style1.css"/>
-    </head>
-    <nav>
-        <ul>
-            <li><h2>IoT Bay</h2></li>
-            <li><a href="index.html">home</a></li>
-            <li><a href="products.jsp">products</a></li>
-            <li><a href="register.jsp">login/register</a></li>
-            <li><a href="account.jsp">account</a></li>
-        </ul>   
-    </nav>
-    <body>
-        <h1>Hello!</h1>
-        
-        <%  
-            // Retrieve session attributes for the user's information
-            String name = (String) session.getAttribute("name");
-            String email = (String) session.getAttribute("email");
-            String pword = (String) session.getAttribute("pword");
-            
-            if (name == null || name.isEmpty()) { %>
-            <p>Please <a href="register.jsp">login or register</a> to view your account information.</p> <%
-} else {
-
-        %>
-        
-        <p>Welcome, <%= session.getAttribute("name") %>!</p>
-        <p>Your email address is: <%= session.getAttribute("email") %></p>
-        
-        <!-- <a href="orders.jsp">View your current orders here </a> -->
-        
-        <a href="logout.jsp"> Logout </a>
-        
-<%
-}
-%>
-        
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Account - IoT Bay</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Account - IoT Bay</h1>
+        <nav>
+            <ul>
+                <li><a href="index.jsp">Home</a></li>
+                <li><a href="products.jsp">Products</a></li>
+                <li><a href="login-register.jsp">Login/Register</a></li>
+                <li><a href="account.jsp">Account</a></li>
+                <li><a href="manage.jsp">Manage Accounts</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Account Information</h2>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>User Role</th>
+            </tr>
+            <%
+                // Retrieve account information from the controller or database
+                User user = accountController.getAccountInfo();
+            %>
+            <tr>
+                <td><%= user.getUserId() %></td>
+                <td><%= user.getFirstName() %></td>
+                <td><%= user.getLastName() %></td>
+                <td><%= user.getEmail() %></td>
+                <td><%= user.getPhoneNumber() %></td>
+                <td><%= user.getUserRole() %></td>
+            </tr>
+        </table>
+        <h2>Access Logs</h2>
+        <table>
+            <tr>
+                <th>Login Time</th>
+                <th>Logout Time</th>
+            </tr>
+            <%
+                // Retrieve access logs from the controller or database
+                List<AccessLog> accessLogs = accountController.getAccessLogs();
+                for (AccessLog log : accessLogs) {
+            %>
+            <tr>
+                <td><%= log.getStartTime() %></td>
+                <td><%= log.getEndTime() %></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+    </main>
+    <footer>
+        <p>&copy; 2023 IoT Bay</p>
+    </footer>
+</body>
 </html>
